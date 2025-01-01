@@ -21,7 +21,7 @@ class BaseTopBar @JvmOverloads constructor(
         binding.titleTxt.text = title
     }
 
-    fun setType(hasIcon: Boolean) {
+    fun isHasIcon(hasIcon: Boolean) {
         if(hasIcon) {
             binding.apply {
                 btnBack.visibility = VISIBLE
