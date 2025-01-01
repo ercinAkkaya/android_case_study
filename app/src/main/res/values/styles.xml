@@ -1,0 +1,8 @@
+<resources>
+    <style name="BottomNavigationViewStyle">
+        <item name="itemIconSize">30dp</item>
+        <item name="itemIconTint">@android:color/white</item>
+        <item name="itemTextColor">@android:color/white</item>
+        <item name="itemBackground">@android:color/transparent</item>
+    </style>
+</resources>

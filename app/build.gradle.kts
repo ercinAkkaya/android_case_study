@@ -105,4 +105,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.material3.v110)
 
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
+
 }
