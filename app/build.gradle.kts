@@ -71,4 +71,10 @@ dependencies {
     implementation (libs.converter.gson)
 
     implementation (libs.glide)
+
+    implementation(libs.androidx.material3)
+    implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
+    implementation(libs.androidx.material3.adaptive.navigation.suite)
+
+
 }
