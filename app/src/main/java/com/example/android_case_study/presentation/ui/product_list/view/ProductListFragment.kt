@@ -1,6 +1,8 @@
 package com.example.android_case_study.presentation.ui.product_list.view
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android_case_study.adapter.HomeRecyclerAdapter
 import com.example.android_case_study.core.base.BaseFragment
 import com.example.android_case_study.databinding.FragmentProductListBinding
+import com.example.android_case_study.presentation.ui.product_list.ProductListAction
 import com.example.android_case_study.presentation.ui.product_list.viewmodel.ProductListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -37,6 +40,8 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductList
         setupUI()
         setupRecyclerView()
         observeState()
+        setupSearchListener()
+
     }
 
     private fun setupUI() {
@@ -80,6 +85,22 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductList
                 }
             }
         }
+    }
+
+    private fun setupSearchListener() {
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            //Bu method boş bırakıldığı için çağırılmaz ve performansı etkilemez
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                Log.d("ProductListFragment", "Search query: $s")
+                viewModel.handleAction(ProductListAction.OnInputChange(s.toString()))
+            }
+            //Bu method boş bırakıldığı için çağırılmaz ve performansı etkilemez
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
     }
 
 }
