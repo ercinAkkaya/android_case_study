@@ -11,9 +11,6 @@
     <color name="text_color_primary">#212121</color> <!-- Siyah -->
     <color name="text_color_secondary">#757575</color> <!-- Gri -->
 
-    <!-- Button Colors -->
-    <color name="button_background">#3F51B5</color>
-    <color name="button_text">#FFFFFF</color>
 
     <!-- Star Colors -->
     <color name="star_selected">#FFC107</color> <!-- Sarı -->

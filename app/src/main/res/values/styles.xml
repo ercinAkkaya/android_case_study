@@ -1,8 +1,11 @@
 <resources>
     <style name="BottomNavigationViewStyle">
-        <item name="itemIconSize">30dp</item>
-        <item name="itemIconTint">@android:color/white</item>
-        <item name="itemTextColor">@android:color/white</item>
-        <item name="itemBackground">@android:color/transparent</item>
+        <item name="itemIconSize">36dp</item>
+    </style>
+    <style name="CustomFilterButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/divider_color</item>
+        <item name="backgroundTint">@color/divider_color</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:stateListAnimator">@null</item>
     </style>
 </resources>

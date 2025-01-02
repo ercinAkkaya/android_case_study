@@ -22,16 +22,14 @@
 
     <TextView
         android:id="@+id/titleTxt"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         style="@style/TextAppearance.Headline"
-        android:layout_marginEnd="42dp"
         android:textColor="@color/background_color"
+        android:gravity="center"
         app:layout_constraintStart_toEndOf="@+id/btnBack"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
-
 
 </merge>
