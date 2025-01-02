@@ -1,37 +1,59 @@
 package com.example.android_case_study.core.base
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-open class BaseViewModel : ViewModel() {
+interface UIState
+interface UIAction
+interface UIEffect
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> get() = _isLoading
+abstract class BaseViewModel<Action : UIAction, State : UIState, Effect : UIEffect> : ViewModel() {
 
-    private val _errorMessage = MutableLiveData<String>()
-    val errorMessage: LiveData<String> get() = _errorMessage
+    private val _uiState = MutableStateFlow(createInitialState())
+    val uiState: StateFlow<State> = _uiState.asStateFlow()
 
-    private fun setLoading(isLoading: Boolean) {
-        _isLoading.value = isLoading
+    private val _events = MutableSharedFlow<Action>()
+    val events: SharedFlow<Action> = _events.asSharedFlow()
+
+    private val _effects = Channel<Effect>(Channel.BUFFERED)
+    val effects: Flow<Effect> = _effects.receiveAsFlow()
+
+    init {
+        subscribeToEvents()
+        loadInitialData()
     }
 
-    fun launchDataLoad(block: suspend () -> Unit) {
-        setLoading(true)
+    protected abstract fun createInitialState(): State
+
+    private fun loadInitialData() {}
+
+    private fun subscribeToEvents() {
         viewModelScope.launch {
-            try {
-                block()
-            } catch (error: Exception) {
-                setErrorMessage(error.message.toString())
-            } finally {
-                setLoading(false)
+            _events.collect { event ->
+                handleEvent(event)
             }
         }
     }
 
-    private fun setErrorMessage(message: String) {
-        _errorMessage.value = message
+    fun setAction(event: Action) {
+        viewModelScope.launch {
+            _events.emit(event)
+        }
     }
+
+    protected fun setState(reduce: State.() -> State) {
+        _uiState.value = uiState.value.reduce()
+    }
+
+    protected fun setEffect(createEffect: () -> Effect) {
+        val effect = createEffect()
+        viewModelScope.launch {
+            _effects.send(effect)
+        }
+    }
+
+    protected abstract fun handleEvent(event: Action)
 }

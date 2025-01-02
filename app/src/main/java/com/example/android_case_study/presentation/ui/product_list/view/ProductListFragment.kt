@@ -1,33 +1,33 @@
 package com.example.android_case_study.presentation.ui.product_list.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.android_case_study.R
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.android_case_study.adapter.HomeRecyclerAdapter
+import com.example.android_case_study.core.base.BaseFragment
 import com.example.android_case_study.databinding.FragmentProductListBinding
+import com.example.android_case_study.domain.model.Product
+import com.example.android_case_study.presentation.ui.product_list.viewmodel.ProductListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
+class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductListViewModel>() {
 
-class ProductListFragment : Fragment() {
+    private lateinit var adapter: HomeRecyclerAdapter
 
-
-    private var _binding: FragmentProductListBinding? = null
-    private val binding get() = _binding!!
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentProductListBinding {
+        return FragmentProductListBinding.inflate(inflater, container, false)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentProductListBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+    override fun getViewModelClass(): Class<ProductListViewModel> {
+        return ProductListViewModel::class.java
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,5 +36,13 @@ class ProductListFragment : Fragment() {
         binding.baseTopBar.isHasIcon(true)
 
 
+
+
+    }
+
+    private fun setupRecyclerView( array: ArrayList<Product>) {
+        adapter = HomeRecyclerAdapter(array)
+        binding.productListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.productListRecyclerView.adapter = adapter
     }
 }
