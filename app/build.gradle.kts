@@ -108,4 +108,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
 
+    implementation(libs.androidx.paging.runtime.ktx)
+
+
 }
