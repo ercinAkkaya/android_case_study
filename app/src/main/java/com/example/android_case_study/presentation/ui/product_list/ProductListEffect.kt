@@ -6,8 +6,6 @@ sealed class ProductListEffect{
 
     data class ShowError(val message: String) : ProductListEffect()
 
-    data object ShowLoading : ProductListEffect()
-
-    data object HideLoading : ProductListEffect()
+    data class ShowToastMessage(val message: String) : ProductListEffect()
 
 }

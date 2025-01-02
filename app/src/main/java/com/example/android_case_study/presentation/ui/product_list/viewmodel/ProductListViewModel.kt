@@ -8,6 +8,7 @@ import com.example.android_case_study.core.util.network.Resource
 import com.example.android_case_study.domain.model.Product
 import com.example.android_case_study.domain.use_case.home.GetProductsUseCase
 import com.example.android_case_study.presentation.ui.product_list.ProductListAction
+import com.example.android_case_study.presentation.ui.product_list.ProductListEffect
 import com.example.android_case_study.presentation.ui.product_list.ProductListState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -26,6 +27,9 @@ class ProductListViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ProductListState())
     val uiState: StateFlow<ProductListState> = _uiState
 
+    private val _uiEffect = MutableStateFlow<ProductListEffect?>(null)
+    val uiEffect: StateFlow<ProductListEffect?> = _uiEffect
+
     private var originalList: List<Product> = emptyList()
     private var job: Job? = null
 
@@ -39,7 +43,9 @@ class ProductListViewModel @Inject constructor(
             is ProductListAction.OnInputChange -> updateList(action.input)
             is ProductListAction.OnFilter -> applyPriceFilter(action.minPrice)
             is ProductListAction.ToggleBottomSheet -> toggleBottomSheet()
-            ProductListAction.Refresh -> refreshData()
+            is ProductListAction.Refresh -> refreshData()
+            is ProductListAction.AddFavorite -> addFavorite(action.productName)
+            is ProductListAction.DeleteFavorite -> deleteFavorite(action.productName)
         }
     }
 
@@ -99,4 +105,16 @@ class ProductListViewModel @Inject constructor(
     private fun refreshData() {
         fetchProducts()
     }
+
+    //TODO: Implement API request functions
+    private fun addFavorite(productName: String) {
+        // API request function, currently empty
+        _uiEffect.tryEmit(ProductListEffect.ShowToastMessage("Added to favorites: $productName"))
+    }
+
+    private fun deleteFavorite(productName: String) {
+        // API request function, currently empty
+        _uiEffect.tryEmit(ProductListEffect.ShowToastMessage("Removed from favorites: $productName"))
+    }
+
 }

@@ -7,16 +7,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.observe
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android_case_study.adapter.HomeRecyclerAdapter
 import com.example.android_case_study.core.base.BaseFragment
 import com.example.android_case_study.databinding.FragmentProductListBinding
 import com.example.android_case_study.presentation.ui.product_list.ProductListAction
+import com.example.android_case_study.presentation.ui.product_list.ProductListEffect
 import com.example.android_case_study.presentation.ui.product_list.viewmodel.ProductListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -39,12 +39,13 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductList
         setupRecyclerView()
         observeState()
         setupSearchListener()
+        observeEffects()
     }
 
     private fun setupUI() {
         binding.apply {
-            baseTopBar.setTitle("Product List")
-            baseTopBar.isHasIcon(true)
+            baseTopBar.setTitle("E-Market")
+            baseTopBar.isHasIcon(false)
             filterButton.setOnClickListener {
                 viewModel.handleAction(ProductListAction.ToggleBottomSheet)
             }
@@ -56,7 +57,9 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductList
     }
 
     private fun setupRecyclerView() {
-        adapter = HomeRecyclerAdapter(arrayListOf())
+        adapter = HomeRecyclerAdapter(arrayListOf()) { action ->
+            viewModel.handleAction(action)
+        }
         binding.productListRecyclerView.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = this@ProductListFragment.adapter
@@ -108,5 +111,25 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductList
         FilterBottomSheet { minPrice ->
             viewModel.handleAction(ProductListAction.OnFilter(minPrice))
         }.show(childFragmentManager, "FilterBottomSheet")
+    }
+
+    private fun observeEffects() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiEffect.collect { effect ->
+                    when (effect) {
+                        is ProductListEffect.ShowError -> {
+                            Toast.makeText(requireContext(), effect.message, Toast.LENGTH_SHORT).show()
+                        }
+                        is ProductListEffect.ShowToastMessage -> {
+                            Toast.makeText(requireContext(), effect.message, Toast.LENGTH_SHORT).show()
+                        }
+                        null -> {
+                            // No effect to handle
+                        }
+                    }
+                }
+            }
+        }
     }
 }
