@@ -1,12 +1,11 @@
 package com.example.android_case_study.presentation.ui.product_list.viewmodel
 
-import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android_case_study.core.util.network.Resource
 import com.example.android_case_study.domain.model.Product
 import com.example.android_case_study.domain.use_case.home.GetProductsUseCase
+import com.example.android_case_study.presentation.ui.detail.model.DetailModel
 import com.example.android_case_study.presentation.ui.product_list.ProductListAction
 import com.example.android_case_study.presentation.ui.product_list.ProductListEffect
 import com.example.android_case_study.presentation.ui.product_list.ProductListState
@@ -16,7 +15,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,6 +44,7 @@ class ProductListViewModel @Inject constructor(
             is ProductListAction.Refresh -> refreshData()
             is ProductListAction.AddFavorite -> addFavorite(action.productName)
             is ProductListAction.DeleteFavorite -> deleteFavorite(action.productName)
+            is ProductListAction.NavigateToDetail -> navigateToDetail(action.productDetail)
         }
     }
 
@@ -115,6 +114,10 @@ class ProductListViewModel @Inject constructor(
     private fun deleteFavorite(productName: String) {
         // API request function, currently empty
         _uiEffect.tryEmit(ProductListEffect.ShowToastMessage("Removed from favorites: $productName"))
+    }
+
+    private fun navigateToDetail(product: DetailModel) {
+        _uiEffect.tryEmit(ProductListEffect.NavigateToDetail(product))
     }
 
 }

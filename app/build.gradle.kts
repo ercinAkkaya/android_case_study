@@ -6,6 +6,8 @@ plugins {
     id("com.google.dagger.hilt.android")
     alias(libs.plugins.kotlin.serialization)
     id("org.jlleitschuh.gradle.ktlint") version "11.5.1"
+    id("kotlin-parcelize")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -97,7 +99,7 @@ dependencies {
     implementation(libs.logging.interceptor)
 
     //Leak Canary
-    debugImplementation (libs.leakcanary.android)
+    debugImplementation(libs.leakcanary.android)
 
     implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
     implementation(libs.androidx.material3.adaptive.navigation.suite)
@@ -109,6 +111,9 @@ dependencies {
     implementation(libs.androidx.navigation.ui)
 
     implementation(libs.androidx.paging.runtime.ktx)
+
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 
 
 }
