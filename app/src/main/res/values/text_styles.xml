@@ -21,7 +21,6 @@
 
     <!-- Buton Yazı Stili -->
     <style name="TextStyle.Button" parent="TextAppearance.Material3.LabelLarge">
-        <item name="android:textColor">@color/button_text</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>

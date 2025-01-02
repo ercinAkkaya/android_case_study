@@ -11,18 +11,9 @@
         <item name="android:textColorPrimary">@color/text_color_primary</item>
         <item name="android:textColorSecondary">@color/text_color_secondary</item>
 
-        <!-- Button Styles -->
-        <item name="buttonStyle">@style/ButtonStyle</item>
     </style>
 
     <style name="Theme.Android_case_study" parent="Base.Theme.Android_case_study" />
-
-    <!-- Button Style -->
-    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
-        <item name="android:backgroundTint">@color/button_background</item>
-        <item name="android:textColor">@color/button_text</item>
-        <item name="cornerRadius">8dp</item>
-    </style>
 
     <!-- CardView Style -->
     <style name="ProductCardStyle">

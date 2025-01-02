@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="166dp"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding_small">
+
+    <ImageView
+        android:id="@+id/productImageView"
+        android:layout_width="150dp"
+        android:layout_height="170dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/unSelectedStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding_small"
+        android:src="@drawable/star"
+        app:layout_constraintEnd_toEndOf="@+id/productImageView"
+        app:layout_constraintTop_toTopOf="@+id/productImageView" />
+
+    <ImageView
+        android:id="@+id/selectedStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding_small"
+        android:src="@drawable/selected_star"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/productImageView"
+        app:layout_constraintTop_toTopOf="@+id/productImageView" />
+
+    <TextView
+        android:id="@+id/productPriceTxt"
+        style="@style/TextAppearance.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="100"
+        android:textColor="@color/primary_color"
+        app:layout_constraintStart_toStartOf="@id/productImageView"
+        app:layout_constraintTop_toBottomOf="@+id/productImageView" />
+
+    <TextView
+        android:id="@+id/productDescriptionTxt"
+        style="@style/TextAppearance.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Iphone 13 pro max 256 gb"
+        app:layout_constraintStart_toStartOf="@id/productPriceTxt"
+        app:layout_constraintTop_toBottomOf="@+id/productPriceTxt" />
+
+    <Button
+        android:id="@+id/btnAddToCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/add_cart_button_background"
+        android:backgroundTint="@color/primary_color"
+        android:gravity="center"
+        android:text="Add to Cart"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="@id/productDescriptionTxt"
+        app:layout_constraintTop_toBottomOf="@id/productDescriptionTxt" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
