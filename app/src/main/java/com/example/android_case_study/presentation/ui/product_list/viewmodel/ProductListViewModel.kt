@@ -27,19 +27,26 @@ class ProductListViewModel @Inject constructor(
     val uiState: StateFlow<ProductListState> = _uiState
 
     private var originalList: List<Product> = emptyList()
+    private var job: Job? = null
 
     init {
         fetchProducts()
     }
 
-    fun refreshProducts() {
-        fetchProducts()
-    }
 
     fun handleAction(action: ProductListAction) {
         when (action) {
             is ProductListAction.OnInputChange -> updateList(action.input)
+            is ProductListAction.OnFilter -> applyPriceFilter(action.minPrice)
+            is ProductListAction.ToggleBottomSheet -> toggleBottomSheet()
+            ProductListAction.Refresh -> refreshData()
         }
+    }
+
+    private fun toggleBottomSheet() {
+        _uiState.value = _uiState.value.copy(
+            bottomSheetVisible = !_uiState.value.bottomSheetVisible
+        )
     }
 
     private fun updateList(input: String) {
@@ -53,20 +60,27 @@ class ProductListViewModel @Inject constructor(
         }
     }
 
-    private var job: Job? = null
+    private fun applyPriceFilter(minPrice: Double) {
+        val filteredList = originalList.filter { product ->
+            product.price >= minPrice.toString()
+        }
+        _uiState.value = _uiState.value.copy(
+            productList = filteredList,
+            bottomSheetVisible = false
+        )
+    }
+
     private fun fetchProducts() {
         job?.cancel()
         job = getProductsUseCase.getProducts()
             .onEach { result ->
                 when (result) {
                     is Resource.Success -> {
-                        // Gelen listeyi hem orijinal hem de gösterilecek liste olarak kaydet
                         originalList = result.data ?: emptyList()
                         _uiState.value = ProductListState(
                             productList = originalList,
                             isLoading = false
                         )
-                        Log.d("ProductListViewModel", "Success: ${result.data?.firstOrNull()}")
                     }
                     is Resource.Error -> {
                         _uiState.value = ProductListState(
@@ -80,5 +94,9 @@ class ProductListViewModel @Inject constructor(
                 }
             }
             .launchIn(viewModelScope)
+    }
+
+    private fun refreshData() {
+        fetchProducts()
     }
 }
