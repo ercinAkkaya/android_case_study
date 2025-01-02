@@ -20,16 +20,8 @@
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <argument
-            android:name="productUrl"
-            app:argType="string" />
-        <argument
-            android:name="productTitle"
-            app:argType="string" />
-        <argument
-            android:name="productDescription"
-            app:argType="string" />
-        <argument android:name="productPrice" />
-        <argument android:name="isFavorite" />
+            android:name="DetailModel"
+            app:argType="com.example.android_case_study.presentation.ui.detail.model.DetailModel" />
     </fragment>
 
 

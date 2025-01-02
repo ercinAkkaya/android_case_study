@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android_case_study.adapter.HomeRecyclerAdapter
 import com.example.android_case_study.core.base.BaseFragment
@@ -20,6 +22,7 @@ import com.example.android_case_study.presentation.ui.product_list.ProductListEf
 import com.example.android_case_study.presentation.ui.product_list.viewmodel.ProductListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import androidx.navigation.fragment.findNavController
 
 @AndroidEntryPoint
 class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductListViewModel>() {
@@ -123,6 +126,10 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductList
                         }
                         is ProductListEffect.ShowToastMessage -> {
                             Toast.makeText(requireContext(), effect.message, Toast.LENGTH_SHORT).show()
+                        }
+                        is ProductListEffect.NavigateToDetail -> {
+                            val action = ProductListFragmentDirections.actionProductListFragmentToDetailFragment(effect.productDetailModel)
+                            findNavController().navigate(action)
                         }
                         null -> {
                             // No effect to handle

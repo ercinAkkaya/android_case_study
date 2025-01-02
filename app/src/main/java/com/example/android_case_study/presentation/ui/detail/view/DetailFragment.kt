@@ -1,60 +1,75 @@
 package com.example.android_case_study.presentation.ui.detail.view
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.android_case_study.R
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.example.android_case_study.core.base.BaseFragment
+import com.example.android_case_study.core.util.extensions.loadImage
+import com.example.android_case_study.core.util.extensions.placeHolder
+import com.example.android_case_study.databinding.FragmentDetailBinding
+import com.example.android_case_study.presentation.ui.detail.viewmodel.DetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+@AndroidEntryPoint
+class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class DetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    override fun getViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentDetailBinding {
+        return FragmentDetailBinding.inflate(inflater, container, false)
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    override fun getViewModelClass(): Class<DetailViewModel> {
+        return DetailViewModel::class.java
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        _binding = getViewBinding(inflater, container)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        observeState()
+
+        arguments?.let { bundle ->
+            val args = DetailFragmentArgs.fromBundle(bundle)
+            viewModel.setProductDetail(args.DetailModel)
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun observeState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    binding.apply {
+                        state.isLoading.let {
+                            if (it) {
+                                //TODO
+                            }
+                            state.productDetailModel?.let { product ->
+                                productImage.loadImage(product.imageUrl, placeHolder(requireContext()))
+                                productName.text = product.name
+                                productPrice.text = product.price.toString()
+                                productDescription.text = product.description
+                            }
+                        }
+                    }
                 }
             }
+        }
     }
 }

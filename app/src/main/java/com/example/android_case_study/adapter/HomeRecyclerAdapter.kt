@@ -9,6 +9,7 @@ import com.example.android_case_study.core.util.extensions.loadImage
 import com.example.android_case_study.core.util.extensions.placeHolder
 import com.example.android_case_study.databinding.ProductListItemBinding
 import com.example.android_case_study.domain.model.Product
+import com.example.android_case_study.domain.model.toDetailModel
 import com.example.android_case_study.presentation.ui.product_list.ProductListAction
 
 class HomeRecyclerAdapter(
@@ -33,7 +34,7 @@ class HomeRecyclerAdapter(
                 onAction(ProductListAction.DeleteFavorite(product.name))
             }
             itemView.setOnClickListener {
-                onAction(ProductListAction.AddFavorite(product.name))
+                onAction(ProductListAction.NavigateToDetail(product.toDetailModel()))
             }
         }
     }
