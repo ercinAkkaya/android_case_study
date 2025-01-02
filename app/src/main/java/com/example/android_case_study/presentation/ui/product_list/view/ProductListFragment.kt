@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductListViewModel>() {
-
     private lateinit var adapter: HomeRecyclerAdapter
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentProductListBinding {
@@ -36,18 +35,23 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupUI()
         setupRecyclerView()
         observeState()
         setupSearchListener()
-
     }
 
     private fun setupUI() {
         binding.apply {
             baseTopBar.setTitle("Product List")
             baseTopBar.isHasIcon(true)
+            filterButton.setOnClickListener {
+                viewModel.handleAction(ProductListAction.ToggleBottomSheet)
+            }
+            binding.swipeRefreshLayout.setOnRefreshListener {
+                viewModel.handleAction(ProductListAction.Refresh)
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
         }
     }
 
@@ -72,7 +76,6 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductList
                             state.error.isNotEmpty() -> {
                                 loadingProgressBar.visibility = View.GONE
                                 productListRecyclerView.visibility = View.GONE
-                                // Hata mesajını gösterin
                                 Log.e("ProductListFragment", "Error: ${state.error}")
                             }
                             state.productList.isNotEmpty() -> {
@@ -80,6 +83,10 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductList
                                 productListRecyclerView.visibility = View.VISIBLE
                                 adapter.updateProducts(state.productList)
                             }
+                        }
+
+                        if (state.bottomSheetVisible) {
+                            showFilterBottomSheet()
                         }
                     }
                 }
@@ -89,18 +96,17 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductList
 
     private fun setupSearchListener() {
         binding.searchEditText.addTextChangedListener(object : TextWatcher {
-            //Bu method boş bırakıldığı için çağırılmaz ve performansı etkilemez
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.d("ProductListFragment", "Search query: $s")
                 viewModel.handleAction(ProductListAction.OnInputChange(s.toString()))
             }
-            //Bu method boş bırakıldığı için çağırılmaz ve performansı etkilemez
-            override fun afterTextChanged(s: Editable?) {
-            }
+            override fun afterTextChanged(s: Editable?) {}
         })
     }
 
+    private fun showFilterBottomSheet() {
+        FilterBottomSheet { minPrice ->
+            viewModel.handleAction(ProductListAction.OnFilter(minPrice))
+        }.show(childFragmentManager, "FilterBottomSheet")
+    }
 }
