@@ -1,6 +1,6 @@
 package com.example.android_case_study.data.remote.dto.response
 
-data class ProductResponse(
+data class ProductResponseDtoItem(
     val brand: String,
     val createdAt: String,
     val description: String,

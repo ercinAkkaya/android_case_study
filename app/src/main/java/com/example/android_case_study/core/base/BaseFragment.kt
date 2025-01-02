@@ -6,15 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseFragment<DB : ViewBinding, VM : BaseViewModel> : Fragment() {
+abstract class BaseFragment<DB : ViewBinding, VM : ViewModel> : Fragment() {
 
     private var _binding: DB? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
-    private lateinit var viewModel: VM
+    lateinit var viewModel: VM
 
     abstract fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): DB
 
