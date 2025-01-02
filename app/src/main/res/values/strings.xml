@@ -7,4 +7,5 @@
     <string name="select_filter">Select Filter</string>
     <string name="enter_minimum_price">Enter minimum price</string>
     <string name="apply_filter">Apply Filter</string>
+    <string name="add_to_cart">Add to Cart</string>
 </resources>

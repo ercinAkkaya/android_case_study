@@ -1,76 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="200dp"
+    android:layout_width="170dp"
     android:layout_height="wrap_content"
-    android:padding="@dimen/padding_small">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="8dp"
+    android:layout_gravity="center"
+    android:layout_margin="6dp">
 
-    <ImageView
-        android:id="@+id/productImageView"
-        android:layout_width="150dp"
-        android:layout_height="170dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintWidth_percent="1"
-        app:layout_constraintDimensionRatio="H,1:1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-
-    <ImageView
-        android:id="@+id/unSelectedStar"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding_small"
-        android:src="@drawable/star"
-        app:layout_constraintEnd_toEndOf="@+id/productImageView"
-        app:layout_constraintTop_toTopOf="@+id/productImageView" />
+        android:padding="@dimen/padding_small">
 
-    <ImageView
-        android:id="@+id/selectedStar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding_small"
-        android:src="@drawable/selected_star"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/productImageView"
-        app:layout_constraintTop_toTopOf="@+id/productImageView" />
+        <ImageView
+            android:id="@+id/productImageView"
+            android:layout_width="130dp"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintWidth_percent="1"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/productPriceTxt"
-        style="@style/TextAppearance.Body"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="100"
-        android:textColor="@color/primary_color"
-        app:layout_constraintStart_toStartOf="@id/productImageView"
-        app:layout_constraintTop_toBottomOf="@+id/productImageView" />
+        <ImageView
+            android:id="@+id/unSelectedStar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="@dimen/padding_small"
+            android:src="@drawable/star"
+            app:layout_constraintEnd_toEndOf="@+id/productImageView"
+            app:layout_constraintTop_toTopOf="@+id/productImageView" />
 
-    <TextView
-        android:id="@+id/productDescriptionTxt"
-        style="@style/TextAppearance.Body"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="Iphone 13 pro max 256 gb"
-        app:layout_constraintStart_toStartOf="@id/productPriceTxt"
-        app:layout_constraintTop_toBottomOf="@+id/productPriceTxt" />
+        <ImageView
+            android:id="@+id/selectedStar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="@dimen/padding_small"
+            android:src="@drawable/selected_star"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/productImageView"
+            app:layout_constraintTop_toTopOf="@+id/productImageView" />
 
-    <Button
-        android:id="@+id/btnAddToCart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/add_cart_button_background"
-        android:backgroundTint="@color/primary_color"
-        android:gravity="center"
-        android:text="Add to Cart"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toStartOf="@id/productDescriptionTxt"
-        app:layout_constraintTop_toBottomOf="@id/productDescriptionTxt" />
+        <TextView
+            android:id="@+id/productPriceTxt"
+            style="@style/TextAppearance.Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100"
+            android:textColor="@color/primary_color"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/productImageView"
+            android:gravity="center" />
 
+        <TextView
+            android:id="@+id/productDescriptionTxt"
+            style="@style/TextAppearance.Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Iphone 13 pro max 256 gb"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/productPriceTxt"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/btnAddToCart"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/add_cart_button_background"
+            android:backgroundTint="@color/primary_color"
+            android:text="@string/add_to_cart"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/productDescriptionTxt"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
