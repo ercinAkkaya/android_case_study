@@ -6,14 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android_case_study.adapter.HomeRecyclerAdapter
 import com.example.android_case_study.core.base.BaseFragment
 import com.example.android_case_study.databinding.FragmentProductListBinding
-import com.example.android_case_study.domain.model.Product
 import com.example.android_case_study.presentation.ui.product_list.viewmodel.ProductListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductListViewModel>() {
@@ -28,21 +31,55 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductList
         return ProductListViewModel::class.java
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.baseTopBar.setTitle("Product List")
-        binding.baseTopBar.isHasIcon(true)
-
-
-
-
+        setupUI()
+        setupRecyclerView()
+        observeState()
     }
 
-    private fun setupRecyclerView( array: ArrayList<Product>) {
-        adapter = HomeRecyclerAdapter(array)
-        binding.productListRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        binding.productListRecyclerView.adapter = adapter
+    private fun setupUI() {
+        binding.apply {
+            baseTopBar.setTitle("Product List")
+            baseTopBar.isHasIcon(true)
+        }
     }
+
+    private fun setupRecyclerView() {
+        adapter = HomeRecyclerAdapter(arrayListOf())
+        binding.productListRecyclerView.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            adapter = this@ProductListFragment.adapter
+        }
+    }
+
+    private fun observeState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { state ->
+                    binding.apply {
+                        when {
+                            state.isLoading -> {
+                                loadingProgressBar.visibility = View.VISIBLE
+                                productListRecyclerView.visibility = View.GONE
+                            }
+                            state.error.isNotEmpty() -> {
+                                loadingProgressBar.visibility = View.GONE
+                                productListRecyclerView.visibility = View.GONE
+                                // Hata mesajını gösterin
+                                Log.e("ProductListFragment", "Error: ${state.error}")
+                            }
+                            state.productList.isNotEmpty() -> {
+                                loadingProgressBar.visibility = View.GONE
+                                productListRecyclerView.visibility = View.VISIBLE
+                                adapter.updateProducts(state.productList)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
