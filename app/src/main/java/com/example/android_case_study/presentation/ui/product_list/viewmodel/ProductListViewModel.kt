@@ -2,13 +2,17 @@ package com.example.android_case_study.presentation.ui.product_list.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.android_case_study.MainViewModel
+import com.example.android_case_study.core.util.manager.SharedStateManager
 import com.example.android_case_study.core.util.network.Resource
 import com.example.android_case_study.data.local.entity.CartEntity
 import com.example.android_case_study.data.local.entity.FavoriteEntity
 import com.example.android_case_study.domain.model.Product
+import com.example.android_case_study.domain.use_case.cart.GetCartItemCountUseCase
 import com.example.android_case_study.domain.use_case.cart.InsertCartItemUseCase
 import com.example.android_case_study.domain.use_case.favorite.AddToFavoritesUseCase
 import com.example.android_case_study.domain.use_case.favorite.DeleteFavoriteItemUseCase
+import com.example.android_case_study.domain.use_case.favorite.GetFavoriteItemCountUseCase
 import com.example.android_case_study.domain.use_case.home.GetProductsUseCase
 import com.example.android_case_study.presentation.ui.detail.model.DetailModel
 import com.example.android_case_study.presentation.ui.product_list.ProductListAction
@@ -28,7 +32,10 @@ class ProductListViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
     private val addToFavoritesUseCase: AddToFavoritesUseCase,
     private val addToCartUseCase: InsertCartItemUseCase,
-    private val deleteFavoriteUseCase: DeleteFavoriteItemUseCase
+    private val deleteFavoriteUseCase: DeleteFavoriteItemUseCase,
+    private val sharedStateManager: SharedStateManager,
+    private val getCartItemCountUseCase: GetCartItemCountUseCase,
+    private val getFavoriteItemCountUseCase: GetFavoriteItemCountUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProductListState())
@@ -42,6 +49,7 @@ class ProductListViewModel @Inject constructor(
 
     init {
         fetchProducts()
+        updateBadgesCount()
     }
 
     fun handleAction(action: ProductListAction) {
@@ -114,10 +122,10 @@ class ProductListViewModel @Inject constructor(
         fetchProducts()
     }
 
-    // TODO: Implement API request functions
     private fun addFavorite(favoriteItem: FavoriteEntity) {
         viewModelScope.launch {
             addToFavoritesUseCase.execute(favoriteItem)
+            sharedStateManager.incrementFavoriteItemCount()
         }
         _uiEffect.tryEmit(ProductListEffect.ShowToastMessage("Added to favorites: ${favoriteItem.name}"))
     }
@@ -125,6 +133,7 @@ class ProductListViewModel @Inject constructor(
     private fun addToCart(cartItem: CartEntity) {
         viewModelScope.launch {
             addToCartUseCase.invoke(cartItem)
+            sharedStateManager.incrementCartItemCount()
         }
         _uiEffect.tryEmit(ProductListEffect.ShowToastMessage("Added to cart: ${cartItem.name}"))
     }
@@ -132,6 +141,7 @@ class ProductListViewModel @Inject constructor(
     private fun deleteFavorite(id: String, name: String) {
         viewModelScope.launch {
             deleteFavoriteUseCase.deleteFavoriteItem(id)
+            sharedStateManager.decrementFavoriteItemCount()
         }
         _uiEffect.tryEmit(ProductListEffect.ShowToastMessage("Removed from favorites: $name"))
     }
@@ -139,4 +149,15 @@ class ProductListViewModel @Inject constructor(
     private fun navigateToDetail(product: DetailModel) {
         _uiEffect.tryEmit(ProductListEffect.NavigateToDetail(product))
     }
+
+    private fun updateBadgesCount() {
+        viewModelScope.launch {
+            sharedStateManager.updateCartItemCount(getCartItemCountUseCase.invoke())
+        }
+
+        viewModelScope.launch {
+            sharedStateManager.updateFavoriteItemCount(getFavoriteItemCountUseCase.invoke())
+        }
+    }
+
 }

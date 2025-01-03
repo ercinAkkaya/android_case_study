@@ -25,4 +25,7 @@ interface CartDao {
 
     @Query("SELECT COUNT(*) FROM cart_database WHERE id = :cartItemId")
     suspend fun getItemCount(cartItemId: String): Int
+
+    @Query("SELECT COUNT(*) FROM cart_database")
+    suspend fun getCartItemCount(): Int
 }

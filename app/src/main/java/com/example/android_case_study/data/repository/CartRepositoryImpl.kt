@@ -27,4 +27,8 @@ class CartRepositoryImpl @Inject constructor(
     override suspend fun deleteAllCartItems() {
         cartDao.deleteAllCartItems()
     }
+
+    override suspend fun getCartItemCount(): Int {
+        return cartDao.getCartItemCount()
+    }
 }

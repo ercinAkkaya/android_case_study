@@ -16,4 +16,8 @@ class FavoriteRepositoryImpl(private val favoriteDao: FavoriteDao) : FavoriteRep
     override suspend fun deleteFavoriteItem(id: String) {
         favoriteDao.deleteFavoriteItem(id)
     }
+
+    override suspend fun getFavoriteItemCount(): Int {
+        return favoriteDao.getFavoriteItemCount()
+    }
 }

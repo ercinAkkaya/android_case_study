@@ -2,16 +2,24 @@ package com.example.android_case_study
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navOptions
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    private val mainViewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -26,8 +34,22 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
 
-        val bottomNavigationView = findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottomNavigationView)
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
+
+        // Sepet için badge ekleme ve güncelleme
+        lifecycleScope.launchWhenStarted {
+            mainViewModel.cartItemCount.collect { count ->
+                setCartBadge(bottomNavigationView, count)
+            }
+        }
+
+        // Favori için badge ekleme ve güncelleme
+        lifecycleScope.launchWhenStarted {
+            mainViewModel.favoriteItemCount.collect { count ->
+                setFavoriteBadge(bottomNavigationView, count)
+            }
+        }
 
         // burda backstackte sadece anasayfanın kalmasını sağladık
         bottomNavigationView.setOnItemSelectedListener { item ->
@@ -64,5 +86,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-}
 
+    private fun setCartBadge(bottomNavigationView: BottomNavigationView, count: Int) {
+        val badge = bottomNavigationView.getOrCreateBadge(R.id.nav_basket)
+        badge.isVisible = count > 0
+        badge.number = count
+    }
+
+    private fun setFavoriteBadge(bottomNavigationView: BottomNavigationView, count: Int) {
+        val badge = bottomNavigationView.getOrCreateBadge(R.id.nav_star)
+        badge.isVisible = count > 0
+        badge.number = count
+    }
+}
