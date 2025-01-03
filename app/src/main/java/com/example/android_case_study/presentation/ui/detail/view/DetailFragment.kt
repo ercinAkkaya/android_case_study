@@ -2,12 +2,15 @@ package com.example.android_case_study.presentation.ui.detail.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.example.android_case_study.core.base.BaseFragment
 import com.example.android_case_study.core.util.extensions.loadImage
 import com.example.android_case_study.core.util.extensions.placeHolder
@@ -31,23 +34,14 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
         return DetailViewModel::class.java
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = getViewBinding(inflater, container)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupUI()
         observeState()
+    }
 
-        arguments?.let { bundle ->
-            val args = DetailFragmentArgs.fromBundle(bundle)
-            viewModel.setProductDetail(args.DetailModel)
-        }
+    private fun setupUI() {
+        binding.baseTopBar.isHasIcon(true)
     }
 
     @SuppressLint("SetTextI18n")
@@ -56,16 +50,18 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
                     binding.apply {
-                        state.isLoading.let {
-                            if (it) {
-                                //TODO
-                            }
-                            state.productDetailModel?.let { product ->
-                                productImage.loadImage(product.imageUrl, placeHolder(requireContext()))
-                                productName.text = product.name
-                                productPrice.text = product.price.toString()
-                                productDescription.text = product.description
-                            }
+                        state.productDetailModel?.let { product ->
+                            baseTopBar.setTitle(product.name)
+                            productImage.loadImage(
+                                product.imageUrl,
+                                placeHolder(requireContext())
+                            )
+                            productName.text = product.name
+                            productPrice.text = "${product.price} ₺"
+                            productDescription.text = product.description
+                            Log.d("DetailFragment", "Product: $product")
+                            selectedStar.visibility = if (state.isFavorite) View.VISIBLE else View.GONE
+                            unSelectedStar.visibility = if (state.isFavorite) View.GONE else View.VISIBLE
                         }
                     }
                 }
