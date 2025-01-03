@@ -28,7 +28,9 @@ import androidx.navigation.fragment.findNavController
 class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductListViewModel>() {
     private lateinit var adapter: HomeRecyclerAdapter
 
-    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentProductListBinding {
+    override fun getViewBinding(
+        inflater: LayoutInflater, container: ViewGroup?
+    ): FragmentProductListBinding {
         return FragmentProductListBinding.inflate(inflater, container, false)
     }
 

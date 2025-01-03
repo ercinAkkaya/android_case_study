@@ -23,6 +23,11 @@
             android:name="DetailModel"
             app:argType="com.example.android_case_study.presentation.ui.detail.model.DetailModel" />
     </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.example.android_case_study.presentation.ui.cart.view.CartFragment"
+        android:label="fragment_cart"
+        tools:layout="@layout/fragment_cart" />
 
 
 </navigation>
