@@ -30,9 +30,7 @@ import javax.inject.Inject
 class ProductListViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
     private val addToFavoritesUseCase: AddToFavoritesUseCase,
-    private val getAllFavoriteItemsUseCase: GetAllFavoriteItemsUseCase,
     private val addToCartUseCase: InsertCartItemUseCase,
-    private val getAllCartItemsUseCase: GetAllCartItemsUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProductListState())
@@ -46,23 +44,6 @@ class ProductListViewModel @Inject constructor(
 
     init {
         fetchProducts()
-        getAllFavoriteItems()
-        getAllCartItems()
-    }
-
-
-    private fun getAllFavoriteItems() {
-        viewModelScope.launch {
-            val items = getAllFavoriteItemsUseCase()
-            Log.d("ProductListViewModel", "Favorite Items: $items")
-        }
-    }
-
-    private fun getAllCartItems() {
-        viewModelScope.launch {
-            val items = getAllCartItemsUseCase()
-            Log.d("ProductListViewModel", "Cart Items: $items")
-        }
     }
 
 
