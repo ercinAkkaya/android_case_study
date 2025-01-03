@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.navOptions
 import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,23 +29,35 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
 
-        // TODO: burda backstack kontrolü yapılacak
+        // burda backstackte sadece anasayfanın kalmasını sağladık
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_basket -> {
-                    navController.navigate(R.id.cartFragment)
+                    navController.navigate(R.id.cartFragment, null, navOptions {
+                        popUpTo(R.id.cartFragment) { inclusive = true }
+                        launchSingleTop = true
+                    })
                     true
                 }
                 R.id.nav_home -> {
-                    navController.navigate(R.id.productListFragment)
+                    navController.navigate(R.id.productListFragment, null, navOptions {
+                        popUpTo(R.id.productListFragment) { inclusive = true }
+                        launchSingleTop = true
+                    })
                     true
                 }
                 R.id.nav_profile -> {
-                    navController.navigate(R.id.profileFragment)
+                    navController.navigate(R.id.profileFragment, null, navOptions {
+                        popUpTo(R.id.profileFragment) { inclusive = true }
+                        launchSingleTop = true
+                    })
                     true
                 }
                 R.id.nav_star -> {
-                    navController.navigate(R.id.favoriteFragment)
+                    navController.navigate(R.id.favoriteFragment, null, navOptions {
+                        popUpTo(R.id.favoriteFragment) { inclusive = true }
+                        launchSingleTop = true
+                    })
                     true
                 }
                 else -> false
@@ -52,3 +65,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
