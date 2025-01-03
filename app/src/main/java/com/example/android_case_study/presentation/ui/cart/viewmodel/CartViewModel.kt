@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android_case_study.core.util.network.Resource
 import com.example.android_case_study.data.mapper.toCartItem
+import com.example.android_case_study.domain.use_case.cart.DeleteAllCartItemUseCase
 import com.example.android_case_study.domain.use_case.cart.GetAllCartItemsUseCase
 import com.example.android_case_study.presentation.ui.cart.CartFragmentAction
 import com.example.android_case_study.presentation.ui.cart.CartFragmentEffect
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
-    private val getAllCartItemsUseCase: GetAllCartItemsUseCase
+    private val getAllCartItemsUseCase: GetAllCartItemsUseCase,
+    private val deleteAllCartItemUseCase: DeleteAllCartItemUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CartFragmentState())
@@ -67,6 +69,22 @@ class CartViewModel @Inject constructor(
     }
 
     private fun completeShopping() {
-        _uiEffect.tryEmit(CartFragmentEffect.ShowToast("Shopping completed"))
+        viewModelScope.launch {
+            deleteAllCartItemUseCase.deleteAllCartItems().collect { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+                        _uiState.value = _uiState.value.copy(isLoading = true)
+                    }
+                    is Resource.Success -> {
+                        getAllCart()
+                        _uiState.value = _uiState.value.copy(isLoading = false, totalPrice = 0.0)
+                        _uiEffect.tryEmit(CartFragmentEffect.ShowToast("Shopping completed"))
+                    }
+                    is Resource.Error -> {
+                        _uiEffect.tryEmit(CartFragmentEffect.ShowToast(resource.message ?: "An error occurred"))
+                    }
+                }
+            }
+        }
     }
 }

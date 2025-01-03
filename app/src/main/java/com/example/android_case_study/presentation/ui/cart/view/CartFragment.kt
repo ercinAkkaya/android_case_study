@@ -82,16 +82,24 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
                             state.isLoading -> {
                                 cartRecyclerView.visibility = View.GONE
                                 progressBar.visibility = View.VISIBLE
+                                noDataTextView.visibility = View.GONE
                             }
                             state.cartItems.isNotEmpty() -> {
                                 cartRecyclerView.visibility = View.VISIBLE
                                 progressBar.visibility = View.GONE
+                                noDataTextView.visibility = View.GONE
                                 adapter.updateCartItems(state.cartItems)
                                 productPrice.text = state.totalPrice.toString()
+                            }
+                            state.cartItems.isEmpty() -> {
+                                cartRecyclerView.visibility = View.GONE
+                                progressBar.visibility = View.GONE
+                                noDataTextView.visibility = View.VISIBLE
                             }
                             state.error.isNotBlank() -> {
                                 cartRecyclerView.visibility = View.GONE
                                 progressBar.visibility = View.GONE
+                                noDataTextView.visibility = View.GONE
                             }
                         }
                     }
