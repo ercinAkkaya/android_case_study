@@ -6,7 +6,6 @@ import com.example.android_case_study.presentation.ui.detail.DetailAction
 import com.example.android_case_study.presentation.ui.detail.DetailEffect
 import com.example.android_case_study.presentation.ui.detail.DetailState
 import com.example.android_case_study.presentation.ui.detail.model.DetailModel
-import com.example.android_case_study.presentation.ui.product_list.ProductListEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,10 +39,4 @@ class DetailViewModel @Inject constructor(
             is DetailAction.ToggleFavorite -> TODO()
         }
     }
-
-
-
-
-
-
 }

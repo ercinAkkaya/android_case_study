@@ -13,7 +13,8 @@ class FilterBottomSheet(private val onFilterApplied: (Double) -> Unit) : BottomS
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFilterBottomSheetBinding.inflate(inflater, container, false)

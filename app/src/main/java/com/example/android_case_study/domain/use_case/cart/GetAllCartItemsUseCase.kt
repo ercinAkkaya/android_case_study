@@ -10,8 +10,7 @@ import javax.inject.Inject
 class GetAllCartItemsUseCase @Inject constructor(
     private val repository: CartRepository
 ) {
-    fun getAllCartItems() : Flow<Resource<List<CartEntity>>> = flow {
-
+    fun getAllCartItems(): Flow<Resource<List<CartEntity>>> = flow {
         try {
             emit(Resource.Loading())
             val cartItems = repository.getAllCartItems()
@@ -23,6 +22,5 @@ class GetAllCartItemsUseCase @Inject constructor(
         } catch (e: Exception) {
             emit(Resource.Error("An error occurred while fetching cart items : ${e.message}"))
         }
-
     }
 }

@@ -7,5 +7,4 @@ interface ProductAPI {
 
     @GET("/products")
     suspend fun getProducts(): ProductResponseDto
-
 }

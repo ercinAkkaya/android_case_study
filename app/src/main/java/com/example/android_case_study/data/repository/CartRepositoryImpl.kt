@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class CartRepositoryImpl @Inject constructor(
     private val cartDao: CartDao
-): CartRepository {
+) : CartRepository {
     override suspend fun insertCartItem(cartItem: CartEntity) {
         if (cartDao.getItemCount(cartItem.id) > 0) {
             cartDao.incrementQuantity(cartItem.id)
@@ -22,5 +22,9 @@ class CartRepositoryImpl @Inject constructor(
 
     override suspend fun deleteCartItem(id: String) {
         cartDao.deleteCartItem(id)
+    }
+
+    override suspend fun deleteAllCartItems() {
+        cartDao.deleteAllCartItems()
     }
 }

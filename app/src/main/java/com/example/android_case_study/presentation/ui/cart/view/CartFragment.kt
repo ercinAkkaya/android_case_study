@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
 
-    private lateinit var adapter : CartRecyclerAdapter
+    private lateinit var adapter: CartRecyclerAdapter
 
     override fun getViewBinding(
         inflater: LayoutInflater,
@@ -36,7 +36,8 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = getViewBinding(inflater, container)
@@ -64,7 +65,6 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
     private fun setupRecyclerView() {
         adapter = CartRecyclerAdapter(arrayListOf()) { action ->
             viewModel.handleAction(action)
-
         }
         binding.cartRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -100,7 +100,6 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
         }
     }
 
-
     private fun observeEffects() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -110,13 +109,10 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
                             Toast.makeText(requireContext(), effect.message, Toast.LENGTH_SHORT).show()
                         }
                         null -> {
-
                         }
                     }
                 }
             }
         }
     }
-
-
 }

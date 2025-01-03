@@ -1,13 +1,10 @@
 package com.example.android_case_study.data.local.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.android_case_study.data.local.entity.CartEntity
 import com.example.android_case_study.data.local.entity.FavoriteEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoriteDao {
@@ -17,6 +14,6 @@ interface FavoriteDao {
     @Query("SELECT * FROM favorite_database")
     suspend fun getAllFavoriteItems(): List<FavoriteEntity>
 
-    @Delete
-    suspend fun deleteFavoriteItem(favoriteItem: FavoriteEntity)
+    @Query("DELETE FROM favorite_database WHERE id = :id")
+    suspend fun deleteFavoriteItem(id: String)
 }

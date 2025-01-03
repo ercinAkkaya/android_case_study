@@ -40,16 +40,16 @@ class HomeRecyclerAdapter(
                 onAction(ProductListAction.AddFavorite(favoriteEntity))
             }
 
-            //TODO delete yapılacak
+            // TODO delete yapılacak
             binding.selectedStar.setOnClickListener {
                 binding.selectedStar.visibility = View.GONE
                 binding.unSelectedStar.visibility = View.VISIBLE
-                onAction(ProductListAction.DeleteFavorite(product.name))
+                onAction(ProductListAction.DeleteFavorite(product.id, product.name))
             }
             itemView.setOnClickListener {
                 onAction(ProductListAction.NavigateToDetail(product.toDetailModel()))
             }
-            binding.btnAddToCart.setOnClickListener{
+            binding.btnAddToCart.setOnClickListener {
                 val cartEntity = CartEntity(
                     id = product.id,
                     brand = product.brand,

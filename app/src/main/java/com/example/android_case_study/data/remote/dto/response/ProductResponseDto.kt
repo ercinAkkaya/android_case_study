@@ -4,8 +4,7 @@ import com.example.android_case_study.domain.model.Product
 
 class ProductResponseDto : ArrayList<ProductResponseDtoItem>()
 
-
-fun ProductResponseDto.toDomainModel(): List<Product>{
+fun ProductResponseDto.toDomainModel(): List<Product> {
     return this.map {
         Product(
             brand = it.brand,

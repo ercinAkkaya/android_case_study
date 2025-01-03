@@ -1,6 +1,5 @@
 package com.example.android_case_study.presentation.ui.cart.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android_case_study.core.util.network.Resource
@@ -66,7 +65,6 @@ class CartViewModel @Inject constructor(
             }
         }
     }
-
 
     private fun completeShopping() {
         _uiEffect.tryEmit(CartFragmentEffect.ShowToast("Shopping completed"))
