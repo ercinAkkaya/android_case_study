@@ -31,5 +31,4 @@ object APIModule {
     fun provideRepository(productAPI: ProductAPI): ProductRepository {
         return ProductRepositoryImpl(productAPI)
     }
-
 }

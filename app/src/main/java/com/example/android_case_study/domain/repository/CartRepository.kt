@@ -6,4 +6,5 @@ interface CartRepository {
     suspend fun insertCartItem(cartItem: CartEntity)
     suspend fun getAllCartItems(): List<CartEntity>
     suspend fun deleteCartItem(id: String)
+    suspend fun deleteAllCartItems()
 }

@@ -11,7 +11,7 @@ import javax.inject.Inject
 class GetProductsUseCase @Inject constructor(
     private val repository: ProductRepository
 ) {
-    fun getProducts():Flow<Resource<List<Product>>> = flow {
+    fun getProducts(): Flow<Resource<List<Product>>> = flow {
         try {
             emit(Resource.Loading())
             val products = repository.getProducts()

@@ -12,15 +12,13 @@ import com.example.android_case_study.domain.repository.FavoriteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-import dagger.hilt.android.qualifiers.ApplicationContext
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RoomModule {
-
-
 
     @Provides
     @Singleton
@@ -55,5 +53,4 @@ object RoomModule {
     fun provideFavoriteRepository(favoriteDao: FavoriteDao): FavoriteRepository {
         return FavoriteRepositoryImpl(favoriteDao)
     }
-
 }

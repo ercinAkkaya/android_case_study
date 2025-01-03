@@ -11,8 +11,7 @@ import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android_case_study.adapter.HomeRecyclerAdapter
 import com.example.android_case_study.core.base.BaseFragment
@@ -22,14 +21,14 @@ import com.example.android_case_study.presentation.ui.product_list.ProductListEf
 import com.example.android_case_study.presentation.ui.product_list.viewmodel.ProductListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import androidx.navigation.fragment.findNavController
 
 @AndroidEntryPoint
 class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductListViewModel>() {
     private lateinit var adapter: HomeRecyclerAdapter
 
     override fun getViewBinding(
-        inflater: LayoutInflater, container: ViewGroup?
+        inflater: LayoutInflater,
+        container: ViewGroup?
     ): FragmentProductListBinding {
         return FragmentProductListBinding.inflate(inflater, container, false)
     }
@@ -105,7 +104,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductList
     private fun setupSearchListener() {
         binding.searchEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                //TODO
+                // TODO
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -113,7 +112,7 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductList
             }
 
             override fun afterTextChanged(s: Editable?) {
-                //TODO
+                // TODO
             }
         })
     }

@@ -9,5 +9,5 @@ data class DetailModel(
     val name: String,
     val description: String,
     val price: Double,
-    val isFavorite: Boolean,
+    val isFavorite: Boolean
 ) : Parcelable

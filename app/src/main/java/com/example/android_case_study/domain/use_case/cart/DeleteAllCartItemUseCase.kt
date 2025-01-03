@@ -6,16 +6,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class DeleteCartItemUseCase @Inject constructor(
+class DeleteAllCartItemUseCase @Inject constructor(
     private val repository: CartRepository
 ) {
-    fun deleteCartItem(cartItemId: String): Flow<Resource<Unit>> = flow {
+    fun deleteAllCartItems(): Flow<Resource<Unit>> = flow {
         try {
             emit(Resource.Loading())
-            repository.deleteCartItem(cartItemId)
+            repository.deleteAllCartItems()
             emit(Resource.Success(Unit))
         } catch (e: Exception) {
-            emit(Resource.Error("An error occurred while deleting the cart item"))
+            emit(Resource.Error("An error occurred while deleting all cart items"))
         }
     }
 }

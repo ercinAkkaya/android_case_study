@@ -8,7 +8,6 @@ import com.example.android_case_study.domain.model.FavoriteItem
 import com.example.android_case_study.domain.model.Product
 import com.example.android_case_study.presentation.ui.detail.model.DetailModel
 
-
 fun Product.toDetailModel() = DetailModel(
     imageUrl = image,
     name = name,

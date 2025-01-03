@@ -6,11 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.example.android_case_study.core.base.BaseFragment
 import com.example.android_case_study.core.util.extensions.loadImage
 import com.example.android_case_study.core.util.extensions.placeHolder

@@ -1,17 +1,14 @@
 package com.example.android_case_study.presentation.ui.product_list.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android_case_study.core.util.network.Resource
 import com.example.android_case_study.data.local.entity.CartEntity
 import com.example.android_case_study.data.local.entity.FavoriteEntity
-import com.example.android_case_study.domain.model.FavoriteItem
 import com.example.android_case_study.domain.model.Product
-import com.example.android_case_study.domain.use_case.cart.GetAllCartItemsUseCase
 import com.example.android_case_study.domain.use_case.cart.InsertCartItemUseCase
 import com.example.android_case_study.domain.use_case.favorite.AddToFavoritesUseCase
-import com.example.android_case_study.domain.use_case.favorite.GetAllFavoriteItemsUseCase
+import com.example.android_case_study.domain.use_case.favorite.DeleteFavoriteItemUseCase
 import com.example.android_case_study.domain.use_case.home.GetProductsUseCase
 import com.example.android_case_study.presentation.ui.detail.model.DetailModel
 import com.example.android_case_study.presentation.ui.product_list.ProductListAction
@@ -31,6 +28,7 @@ class ProductListViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
     private val addToFavoritesUseCase: AddToFavoritesUseCase,
     private val addToCartUseCase: InsertCartItemUseCase,
+    private val deleteFavoriteUseCase: DeleteFavoriteItemUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProductListState())
@@ -46,8 +44,6 @@ class ProductListViewModel @Inject constructor(
         fetchProducts()
     }
 
-
-
     fun handleAction(action: ProductListAction) {
         when (action) {
             is ProductListAction.OnInputChange -> updateList(action.input)
@@ -55,7 +51,7 @@ class ProductListViewModel @Inject constructor(
             is ProductListAction.ToggleBottomSheet -> toggleBottomSheet()
             is ProductListAction.Refresh -> refreshData()
             is ProductListAction.AddFavorite -> addFavorite(action.product)
-            is ProductListAction.DeleteFavorite -> deleteFavorite(action.productName)
+            is ProductListAction.DeleteFavorite -> deleteFavorite(action.id, action.name)
             is ProductListAction.NavigateToDetail -> navigateToDetail(action.productDetail)
             is ProductListAction.AddToCart -> addToCart(action.product)
         }
@@ -118,7 +114,7 @@ class ProductListViewModel @Inject constructor(
         fetchProducts()
     }
 
-    //TODO: Implement API request functions
+    // TODO: Implement API request functions
     private fun addFavorite(favoriteItem: FavoriteEntity) {
         viewModelScope.launch {
             addToFavoritesUseCase.execute(favoriteItem)
@@ -133,15 +129,14 @@ class ProductListViewModel @Inject constructor(
         _uiEffect.tryEmit(ProductListEffect.ShowToastMessage("Added to cart: ${cartItem.name}"))
     }
 
-
-
-    private fun deleteFavorite(productName: String) {
-        // API request function, currently empty
-        _uiEffect.tryEmit(ProductListEffect.ShowToastMessage("Removed from favorites: $productName"))
+    private fun deleteFavorite(id: String, name: String) {
+        viewModelScope.launch {
+            deleteFavoriteUseCase.deleteFavoriteItem(id)
+        }
+        _uiEffect.tryEmit(ProductListEffect.ShowToastMessage("Removed from favorites: $name"))
     }
 
     private fun navigateToDetail(product: DetailModel) {
         _uiEffect.tryEmit(ProductListEffect.NavigateToDetail(product))
     }
-
 }

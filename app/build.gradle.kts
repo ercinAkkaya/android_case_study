@@ -81,12 +81,12 @@ dependencies {
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
-    //hilt
+    // hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
-    //Glide
+    // Glide
     implementation(libs.glide.v4120)
     kapt(libs.compiler)
     implementation(libs.accompanist.glide.v0150)
@@ -98,7 +98,7 @@ dependencies {
 
     implementation(libs.logging.interceptor)
 
-    //Leak Canary
+    // Leak Canary
     debugImplementation(libs.leakcanary.android)
 
     implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
@@ -114,6 +114,4 @@ dependencies {
 
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-
-
 }

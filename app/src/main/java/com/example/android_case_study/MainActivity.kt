@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
 
-        //TODO: burda backstack kontrolü yapılacak
+        // TODO: burda backstack kontrolü yapılacak
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_basket -> {

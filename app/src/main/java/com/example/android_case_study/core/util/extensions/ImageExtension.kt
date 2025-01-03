@@ -12,7 +12,6 @@ fun ImageView.loadImage(url: String, placeHolder: CircularProgressDrawable) {
     Glide.with(context).setDefaultRequestOptions(options).load(url).into(this)
 }
 
-
 fun placeHolder(context: Context): CircularProgressDrawable {
     return CircularProgressDrawable(context).apply {
         strokeWidth = 8f
