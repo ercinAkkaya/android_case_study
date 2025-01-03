@@ -6,4 +6,5 @@ interface FavoriteRepository {
     suspend fun insertFavoriteItem(favoriteItem: FavoriteEntity)
     suspend fun getAllFavoriteItems(): List<FavoriteEntity>
     suspend fun deleteFavoriteItem(id: String)
+    suspend fun getFavoriteItemCount(): Int
 }
