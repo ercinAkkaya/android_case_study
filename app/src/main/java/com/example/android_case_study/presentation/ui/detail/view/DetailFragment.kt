@@ -66,4 +66,10 @@ class DetailFragment : BaseFragment<FragmentDetailBinding, DetailViewModel>() {
             }
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }
