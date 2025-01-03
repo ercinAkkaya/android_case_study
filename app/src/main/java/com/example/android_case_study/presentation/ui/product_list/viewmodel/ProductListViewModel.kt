@@ -1,9 +1,17 @@
 package com.example.android_case_study.presentation.ui.product_list.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android_case_study.core.util.network.Resource
+import com.example.android_case_study.data.local.entity.CartEntity
+import com.example.android_case_study.data.local.entity.FavoriteEntity
+import com.example.android_case_study.domain.model.FavoriteItem
 import com.example.android_case_study.domain.model.Product
+import com.example.android_case_study.domain.use_case.cart.GetAllCartItemsUseCase
+import com.example.android_case_study.domain.use_case.cart.InsertCartItemUseCase
+import com.example.android_case_study.domain.use_case.favorite.AddToFavoritesUseCase
+import com.example.android_case_study.domain.use_case.favorite.GetAllFavoriteItemsUseCase
 import com.example.android_case_study.domain.use_case.home.GetProductsUseCase
 import com.example.android_case_study.presentation.ui.detail.model.DetailModel
 import com.example.android_case_study.presentation.ui.product_list.ProductListAction
@@ -15,11 +23,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductListViewModel @Inject constructor(
-    private val getProductsUseCase: GetProductsUseCase
+    private val getProductsUseCase: GetProductsUseCase,
+    private val addToFavoritesUseCase: AddToFavoritesUseCase,
+    private val getAllFavoriteItemsUseCase: GetAllFavoriteItemsUseCase,
+    private val addToCartUseCase: InsertCartItemUseCase,
+    private val getAllCartItemsUseCase: GetAllCartItemsUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProductListState())
@@ -33,7 +46,25 @@ class ProductListViewModel @Inject constructor(
 
     init {
         fetchProducts()
+        getAllFavoriteItems()
+        getAllCartItems()
     }
+
+
+    private fun getAllFavoriteItems() {
+        viewModelScope.launch {
+            val items = getAllFavoriteItemsUseCase()
+            Log.d("ProductListViewModel", "Favorite Items: $items")
+        }
+    }
+
+    private fun getAllCartItems() {
+        viewModelScope.launch {
+            val items = getAllCartItemsUseCase()
+            Log.d("ProductListViewModel", "Cart Items: $items")
+        }
+    }
+
 
 
     fun handleAction(action: ProductListAction) {
@@ -42,9 +73,10 @@ class ProductListViewModel @Inject constructor(
             is ProductListAction.OnFilter -> applyPriceFilter(action.minPrice)
             is ProductListAction.ToggleBottomSheet -> toggleBottomSheet()
             is ProductListAction.Refresh -> refreshData()
-            is ProductListAction.AddFavorite -> addFavorite(action.productName)
+            is ProductListAction.AddFavorite -> addFavorite(action.product)
             is ProductListAction.DeleteFavorite -> deleteFavorite(action.productName)
             is ProductListAction.NavigateToDetail -> navigateToDetail(action.productDetail)
+            is ProductListAction.AddToCart -> addToCart(action.product)
         }
     }
 
@@ -106,10 +138,21 @@ class ProductListViewModel @Inject constructor(
     }
 
     //TODO: Implement API request functions
-    private fun addFavorite(productName: String) {
-        // API request function, currently empty
-        _uiEffect.tryEmit(ProductListEffect.ShowToastMessage("Added to favorites: $productName"))
+    private fun addFavorite(favoriteItem: FavoriteEntity) {
+        viewModelScope.launch {
+            addToFavoritesUseCase.execute(favoriteItem)
+        }
+        _uiEffect.tryEmit(ProductListEffect.ShowToastMessage("Added to favorites: ${favoriteItem.name}"))
     }
+
+    private fun addToCart(cartItem: CartEntity) {
+        viewModelScope.launch {
+            addToCartUseCase.invoke(cartItem)
+        }
+        _uiEffect.tryEmit(ProductListEffect.ShowToastMessage("Added to cart: ${cartItem.name}"))
+    }
+
+
 
     private fun deleteFavorite(productName: String) {
         // API request function, currently empty

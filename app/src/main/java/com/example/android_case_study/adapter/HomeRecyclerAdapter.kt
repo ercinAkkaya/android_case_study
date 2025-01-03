@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android_case_study.core.util.extensions.loadImage
 import com.example.android_case_study.core.util.extensions.placeHolder
+import com.example.android_case_study.data.local.entity.CartEntity
+import com.example.android_case_study.data.local.entity.FavoriteEntity
+import com.example.android_case_study.data.mapper.toDetailModel
 import com.example.android_case_study.databinding.ProductListItemBinding
 import com.example.android_case_study.domain.model.Product
-import com.example.android_case_study.domain.model.toDetailModel
 import com.example.android_case_study.presentation.ui.product_list.ProductListAction
 
 class HomeRecyclerAdapter(
@@ -25,9 +27,20 @@ class HomeRecyclerAdapter(
             binding.unSelectedStar.setOnClickListener {
                 binding.unSelectedStar.visibility = View.GONE
                 binding.selectedStar.visibility = View.VISIBLE
-                onAction(ProductListAction.AddFavorite(product.name))
+                val favoriteEntity = FavoriteEntity(
+                    id = product.id,
+                    brand = product.brand,
+                    createdAt = product.createdAt,
+                    description = product.description,
+                    image = product.image,
+                    model = product.model,
+                    name = product.name,
+                    price = product.price
+                )
+                onAction(ProductListAction.AddFavorite(favoriteEntity))
             }
 
+            //TODO delete yapılacak
             binding.selectedStar.setOnClickListener {
                 binding.selectedStar.visibility = View.GONE
                 binding.unSelectedStar.visibility = View.VISIBLE
@@ -35,6 +48,19 @@ class HomeRecyclerAdapter(
             }
             itemView.setOnClickListener {
                 onAction(ProductListAction.NavigateToDetail(product.toDetailModel()))
+            }
+            binding.btnAddToCart.setOnClickListener{
+                val cartEntity = CartEntity(
+                    id = product.id,
+                    brand = product.brand,
+                    createdAt = product.createdAt,
+                    description = product.description,
+                    image = product.image,
+                    model = product.model,
+                    name = product.name,
+                    price = product.price
+                )
+                onAction(ProductListAction.AddToCart(cartEntity))
             }
         }
     }
