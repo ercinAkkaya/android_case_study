@@ -37,14 +37,12 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigationView.setupWithNavController(navController)
 
-        // Sepet için badge ekleme ve güncelleme
         lifecycleScope.launchWhenStarted {
             mainViewModel.cartItemCount.collect { count ->
                 setCartBadge(bottomNavigationView, count)
             }
         }
 
-        // Favori için badge ekleme ve güncelleme
         lifecycleScope.launchWhenStarted {
             mainViewModel.favoriteItemCount.collect { count ->
                 setFavoriteBadge(bottomNavigationView, count)

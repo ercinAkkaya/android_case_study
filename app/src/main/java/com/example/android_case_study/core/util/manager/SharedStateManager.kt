@@ -28,12 +28,10 @@ class SharedStateManager @Inject constructor() {
         _cartItemCount.value += 1
     }
 
-    // Favori sayısını artıran yöntem
     fun incrementFavoriteItemCount() {
         _favoriteItemCount.value += 1
     }
 
-    // Alternatif olarak azaltma yöntemleri de ekleyebilirsiniz:
     fun decrementCartItemCount() {
         _cartItemCount.value -= 1
     }

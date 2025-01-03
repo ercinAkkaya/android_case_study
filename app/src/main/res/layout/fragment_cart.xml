@@ -6,7 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.ui.cart.view.CartFragment">
 
-
     <com.example.android_case_study.presentation.components.BaseTopBar
         android:id="@+id/baseTopBar"
         android:layout_width="match_parent"
@@ -25,18 +24,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:padding="@dimen/padding_small">
 
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cartRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/price"
+            android:layout_marginBottom="16dp"/>
 
         <TextView
+            android:id="@+id/price"
             style="@style/TextAppearance.SubHeadline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,7 +70,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/productPrice"
             app:layout_constraintEnd_toEndOf="parent" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar
@@ -83,8 +81,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
