@@ -115,4 +115,10 @@ class CartFragment : BaseFragment<FragmentCartBinding, CartViewModel>() {
             }
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }

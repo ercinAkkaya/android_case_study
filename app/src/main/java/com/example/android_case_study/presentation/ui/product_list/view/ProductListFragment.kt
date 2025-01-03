@@ -146,4 +146,9 @@ class ProductListFragment : BaseFragment<FragmentProductListBinding, ProductList
             }
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

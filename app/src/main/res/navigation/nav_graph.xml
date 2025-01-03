@@ -28,6 +28,15 @@
         android:name="com.example.android_case_study.presentation.ui.cart.view.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.android_case_study.presentation.ui.profile.view.ProfileFragment"
+        android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.android_case_study.presentation.ui.favorite.view.FavoriteFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite" />
 
 
 </navigation>

@@ -39,6 +39,14 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.productListFragment)
                     true
                 }
+                R.id.nav_profile -> {
+                    navController.navigate(R.id.profileFragment)
+                    true
+                }
+                R.id.nav_star -> {
+                    navController.navigate(R.id.favoriteFragment)
+                    true
+                }
                 else -> false
             }
         }
