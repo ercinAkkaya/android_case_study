@@ -4,7 +4,7 @@ import com.example.android_case_study.domain.model.CartItem
 
 data class CartFragmentState(
     val cartItems: List<CartItem> = emptyList(),
-    val totalAmount: Double = 0.0,
+    val totalPrice: Double = 0.0,
     val isLoading: Boolean = false,
     val error: String = ""
 )

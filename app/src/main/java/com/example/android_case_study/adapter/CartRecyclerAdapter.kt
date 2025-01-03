@@ -7,15 +7,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android_case_study.databinding.CartListItemBinding
 import com.example.android_case_study.domain.model.CartItem
+import com.example.android_case_study.presentation.ui.cart.CartFragmentAction
 
 class CartRecyclerAdapter(
     private val cartList: ArrayList<CartItem>,
+    private val onAction: (CartFragmentAction) -> Unit
 ) : RecyclerView.Adapter<CartRecyclerAdapter.CartViewHolder>() {
 
     class CartViewHolder(private val binding: CartListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(cartItem: CartItem) {
+        @SuppressLint("SetTextI18n")
+        fun bind(cartItem: CartItem, onAction: (CartFragmentAction) -> Unit) {
             binding.productName.text = cartItem.name
             binding.productPrice.text = cartItem.price
+            binding.quantity.text = cartItem.quantity.toString()
         }
     }
 
@@ -29,7 +33,7 @@ class CartRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
-        holder.bind(cartList[position])
+        holder.bind(cartList[position], onAction)
     }
 
     @SuppressLint("NotifyDataSetChanged")

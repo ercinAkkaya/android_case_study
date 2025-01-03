@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
-            android:text="Price: "
+            android:text="@string/price"
             android:textColor="@color/primary_color"
             app:layout_constraintBottom_toTopOf="@id/productPrice"
             app:layout_constraintStart_toStartOf="parent" />
@@ -52,19 +52,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:text="123746854385 TL"
+            android:text="---"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/btnAddToCart"
+            android:id="@+id/btnComplete"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:background="@drawable/add_cart_button_background"
             android:backgroundTint="@color/primary_color"
             android:gravity="center"
             android:paddingHorizontal="@dimen/padding_xlarge"
-            android:text="@string/add_to_cart"
+            android:text="Complete"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -73,6 +73,16 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 
